@@ -5,9 +5,9 @@
     <template>
         <h2>Hello polymer!</h2>
         <iron-ajax id="coinbase" handle-as="json" on-response="_handleResponse"></iron-ajax>
-        <p> [[currencies.0.code]] - [[currencies.0.name]] : [[currencies.0.price]] </p>
-        <p> [[currencies.1.code]] - [[currencies.1.name]] : [[currencies.1.price]] </p>
-        <p> [[currencies.2.code]] - [[currencies.2.name]] : [[currencies.2.price]] </p>
+        <template is="dom-repeat" items="[[currencies]]">
+            <p> [[item.code]] - [[item.name]] : $[[item.price]] </p>
+        </template>
     </template>
 
     <script>
@@ -54,8 +54,10 @@
             }
 
             _computeCurrencyAmount(data) {
-                data.forEach(function(element) {
-                    var index = this.currencies.map(function(e){return e.code}).indexOf(element.base);
+                data.forEach(function (element) {
+                    var index = this.currencies.map(function (e) {
+                        return e.code
+                    }).indexOf(element.base);
                     this.set('currencies.' + index + '.price', element.amount);
                 }, this);
             }
